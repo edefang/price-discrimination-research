@@ -1,0 +1,23 @@
+# Data — never commit collected panels or page captures
+data/
+captures/
+*.db
+*.sqlite3
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+
+# Secrets — proxy credentials never enter the repo
+.env
+*.pem
+
+# OS
+desktop.ini
+.DS_Store
