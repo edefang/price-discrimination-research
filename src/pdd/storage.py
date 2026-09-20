@@ -100,6 +100,25 @@ def load_cohort(
     return usable, missing
 
 
+def usable_personas_by_currency(
+    conn: sqlite3.Connection, sweep_id: str, product_id: str
+) -> dict[str, set[str]]:
+    """Which personas produced a usable price, grouped by the currency they were
+    quoted in. A persona quoted in EUR is not *missing* from the USD cohort — it
+    belongs to a different one — and the caller needs to tell those apart."""
+    out: dict[str, set[str]] = {}
+    for r in conn.execute(
+        """
+        SELECT DISTINCT currency, persona_id FROM observations
+        WHERE sweep_id = ? AND product_id = ? AND parse_status = 'ok'
+          AND canary_status = 'real_page' AND price_minor_units IS NOT NULL
+        """,
+        (sweep_id, product_id),
+    ):
+        out.setdefault(r["currency"], set()).add(r["persona_id"])
+    return out
+
+
 def cohort_keys(conn: sqlite3.Connection) -> Iterator[tuple[str, str, str]]:
     """Every (sweep, product, currency) triple present in the panel."""
     yield from (
