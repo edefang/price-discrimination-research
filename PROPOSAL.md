@@ -24,8 +24,11 @@ responsible. The instrument is separately validated over real HTTP against a moc
 storefront with injected ground truth.
 
 The contribution is methodological: an error-rate characterization of a class of
-measurement designs, and the first test of whether replicated observation can
-distinguish attribute-based pricing from randomized price experimentation.
+measurement designs, and a characterization of how much replication — and of which
+kind — is needed to distinguish attribute-based pricing from randomized price
+experimentation. (An earlier draft claimed the latter as a first; the literature review
+found that duplicated control accounts are established practice, and the claim was
+narrowed. See `docs/08-literature.md`, section 3.)
 
 ## 2. Motivation
 
@@ -66,11 +69,17 @@ count *k* does the separation become dependable?
 **RQ4 — Degradation.** How do differential blocking and parse corruption degrade each
 design, and does either turn a correct design into a misleading one?
 
-RQ3 is the question with the most external value. Retailer A/B testing produces price
-variation that has nothing to do with consumer attributes, and a single-observation
-design cannot tell the two apart. Whether replication solves this has, as far as the
-literature review will establish (`docs/08-literature.md`), not been tested — and
-simulation is the only setting where the ground truth needed to test it exists.
+RQ3 is the question with the most external value, and the one the literature review
+reshaped. Retailer A/B testing produces price variation that has nothing to do with
+consumer attributes, and a single-observation design cannot tell the two apart. Hannak
+et al. (2014) addressed this by running one treatment twice — a duplicated control —
+and reading the twin's inconsistency as the noise floor; Karan et al. (2023) quantify a
+chance-level baseline. Replication for noise control is therefore established, not new.
+
+What neither work characterizes is *how much* replication the separation needs, or
+whether a single duplicated arm (k = 2 on one treatment) performs as well as replicating
+every cell. Those are statistical properties of the design, and simulation — where the
+mechanism is known by construction — is the only setting that can answer them.
 
 ## 4. Hypotheses
 
@@ -110,16 +119,27 @@ confidently wrong null, and it is the one the audit found was invisible to the v
 Not arbitrary variants — an ablation lattice from the v0 design to the corrected one, so
 each feature's contribution is isolated:
 
-| Design | Within-sweep | Control arm | Two-sided | Leave-one-out | Replicates |
-|---|---|---|---|---|---|
-| **D0** — v0 as audited | no | no | no | no | no |
-| D1 | **yes** | no | no | no | no |
-| D2 | yes | **yes** | no | no | no |
-| D3 | yes | yes | **yes** | no | no |
-| D4 | yes | yes | yes | **yes** | no |
-| **D5** — corrected | yes | yes | yes | yes | **yes** |
+| Design | Within-sweep | Two-sided | Leave-one-out | Control arm | Replicates + G4 | Robust parser |
+|---|---|---|---|---|---|---|
+| **D0** — v0 as audited | no | no | no | no | no | no |
+| D1 | **yes** | no | no | no | no | no |
+| D2 | yes | **yes** | no | no | no | no |
+| D3 | yes | yes | **yes** | no | no | no |
+| D4 | yes | yes | yes | **yes** | no | no |
+| D5 | yes | yes | yes | yes | **yes** | no |
+| **D6** — corrected | yes | yes | yes | yes | yes | **yes** |
 
-Adding one feature at a time is what makes RQ2 answerable.
+Adding one feature at a time is what makes RQ2 answerable. Two changes from the first
+draft of this table, both made during implementation: leave-one-out now precedes the
+control arm, because once a control is the reference the leave-one-out step is vacuous
+and its contribution could not be measured; and the parser is a seventh, separate step,
+because parse quality is orthogonal to statistical design and folding it into D5 would
+have confounded two effects.
+
+"Replicates + G4" bundles three things that only exist together: *k* > 1 observations
+per cell, the control-stability gate that needs them, and the rule that an incomplete
+cohort is reported rather than analysed. D0–D4 observe each cell once and drop failures
+silently, as v0 did.
 
 ### 5.3 Outcomes
 
@@ -220,6 +240,7 @@ does not affect completion of anything above.
   unknown, and will be reported as ranges rather than invented as point values.
 - **Publication venue** — undecided. The work stands as a technical report and
   open-source release regardless.
-- **Whether prior work has already tested RQ3** — the highest-priority question for the
-  literature review. If it has, the contribution claim changes and this proposal should
-  be revised before stage 3.
+- ~~**Whether prior work has already tested RQ3**~~ — **resolved 2026-09-19, against the
+  original claim.** Hannak et al. 2014 used duplicated control accounts; Karan et al.
+  2023 quantify a chance baseline. The contribution was narrowed to replication *amount*
+  and *kind* before stage 3, as this item required. Recorded in `docs/08-literature.md`.

@@ -1,131 +1,185 @@
 # Literature
 
-**Status: skeleton. No citation below has been verified.**
+**Status: anchor works verified 2026-09-19.** The earlier version of this file carried a
+warning that its citations were recalled, not retrieved. Each entry below was located and
+confirmed; the verification level is stated per entry, because "found the DOI" and "read
+the methodology" are different things.
 
-Read this warning before using anything here:
-
-> The works named in section 2 are recalled from background knowledge, not retrieved
-> from a database in the course of writing this document. Author lists, venues, years,
-> and findings are **unverified and may be wrong**. Nothing here goes into a proposal,
-> a related-work section, or a grant application until it has been pulled up, opened,
-> and read. Treat these as search leads, not as citations.
-
-That caution is deliberate policy for this project: a fabricated or garbled citation in
-a study whose entire argument is about measurement honesty would be self-refuting.
+**What verification changed.** The review resolved the question it was told to prioritize,
+and resolved it against this project's original contribution claim. See section 3.
 
 ---
 
-## 1. Research threads to cover
+## 1. Verified works
 
-The literature review, when conducted, needs to establish five things.
+### 1.1 Direct predecessors — measuring price discrimination
 
-### 1.1 Prior measurement studies of online price discrimination
-The direct predecessors. What was measured, on which retailers, in which years, with
-what design, and what was found. Most of this work is roughly a decade old, which is
-the opening this study is aimed at — the retail web, its personalization infrastructure,
-and its bot-detection posture have all changed substantially since.
+**Mikians, Gyarmati, Erramilli, Laoutaris. "Detecting price and search discrimination on
+the Internet."** HotNets-XI, Seattle, October 2012. ACM DOI 10.1145/2390231.2390245.
+*Verified: title, authors, venue, abstract.* Reports signs of both price and search
+discrimination and proposes a distributed watchdog system for users to detect it.
 
-**Questions to answer:** What prevalence rates were reported? What magnitudes? Which
-attributes were implicated? How many used a control arm? How many used replicates?
+**Mikians, Gyarmati, Erramilli, Laoutaris. "Crowd-assisted search for price discrimination
+in e-commerce: first results."** CoNEXT 2013. ACM DOI 10.1145/2535372.2535415.
+*Verified: title, venue, DOI; findings via Hannak et al.'s description.* Crowdsourced
+workers; identified sites personalizing mostly on geolocation.
 
-### 1.2 Methodology for measuring web personalization
-Search-result personalization measurement developed the core method — construct
-controlled profiles, issue matched queries, compare results, subtract noise. Price
-measurement inherits it. The noise-subtraction problem in particular is solved work that
-should not be re-derived here.
+**Hannak, Soeller, Lazer, Mislove, Wilson. "Measuring Price Discrimination and Steering on
+E-commerce Web Sites."** IMC 2014, pp. 305–318. ACM DOI 10.1145/2663716.2663744.
+*Verified: full text read (methodology and findings sections).*
 
-**Questions to answer:** How is measurement noise separated from real personalization?
-What control designs are standard? How is carryover between measurements handled?
+The most important predecessor, and the one that changed this project's claims. Key
+points from the text:
+
+- Studied 16 e-commerce sites (general retail, hotels, rental cars) with 300 real users'
+  accounts and cookies plus synthetic accounts. Found some form of personalization on
+  nine sites; controlled tests attributed it to specific features on seven.
+- **Noise control by duplicated control accounts.** Verbatim: they "include a control in
+  each experiment that is configured identically to one other treatment (i.e., we run one
+  of the experimental treatments twice)." Inconsistency between the control and its twin
+  is the noise floor; inconsistency between treatments above that floor is attributed to
+  personalization. The method is carried over from their web-search personalization work
+  (below).
+- **Identified A/B testing as a mechanism.** "Expedia and Hotels.com engage in A/B testing
+  that steers a subset of users towards more expensive hotels" — described as a
+  never-before-seen form of e-commerce personalization.
+- Other findings: member-only hotel discounts (Cheaptickets, Orbitz); mobile-device
+  personalization of search results (Home Depot, Travelocity); history-based
+  personalization (Priceline).
+- Released crawling scripts, parsers, and raw data.
+
+**Vissers, Nikiforakis, Bielova, Joosen. "Crying Wolf? On the Price Discrimination of
+Online Airline Tickets."** HotPETs 2014 (workshop), Amsterdam, July 2014.
+*Verified: title, authors, venue, abstract and summary.* Three-week experiment: 66 user
+profiles, two geographic locations, over 130,000 automated queries, 25 airlines. **Found
+no evidence of systematic price discrimination**; observed fluctuations were attributable
+to factors such as regional tax differences. A documented null result, and a direct
+instance of threat T6 (tax leaking into displayed price).
+
+**Karan, Balepur, Sundaram. "Your Browsing History May Cost You: A Framework for
+Discovering Differential Pricing in Non-Transparent Markets."** FAccT 2023, Chicago, June
+2023. ACM DOI 10.1145/3593013.3594038. *Verified: full text read (abstract, method,
+conclusions).*
+
+The most recent comparable measurement, and the one that corrects this project's
+"decade-old evidence base" premise. Key points:
+
+- Audits kayak.com flight and hotel markets with **nine behavior-based profiles** (not
+  demographic), including a no-history "incognito" control. 112 queries per day for 58
+  days; 1.1M flight records.
+- "Consensus" as the framing: the auditor must show that auditor and seller agree on the
+  buyer attributes, so a price difference between two buyers for the same good at the
+  same time can be ascribed to attributes alone.
+- Structural causal model for price differences, parameters estimated by Bayesian
+  inference.
+- **Quantifies a chance baseline.** Price difference by chance: $0.44 (flights), $0.09
+  (hotels). Observed profile-driven differences up to $6.00 and $3.00 respectively —
+  15× and 33× the chance level.
+- Findings: many but not all sellers show behavior-driven differential pricing; some
+  profiles ~90% more likely to see a worse price than the best profile (flights), ~60%
+  (hotels). The control was best in flights; other profiles beat it in hotels.
+
+### 1.2 Methodology source
+
+**Hannak, Sapiezynski, Molavi Kakhki, Krishnamurthy, Lazer, Mislove, Wilson. "Measuring
+Personalization of Web Search."** WWW 2013, pp. 527–538. ACM DOI 10.1145/2488388.2488435.
+*Verified: title, authors, venue.* Origin of the controlled-profile, matched-query,
+noise-subtraction method that the 2014 e-commerce study reuses.
 
 ### 1.3 Algorithmic and dynamic pricing
-Distinguishing consumer-attribute pricing from pricing that varies by time, inventory,
-competitor behavior, or experimentation. Directly relevant to threats T2 and T9. The
-marketplace-repricing literature matters here because it establishes that prices move
-fast for reasons unrelated to who is looking.
 
-**Questions to answer:** What price-change frequencies are documented? How have others
-separated dynamic pricing from discrimination?
+**Chen, Mislove, Wilson. "An Empirical Analysis of Algorithmic Pricing on Amazon
+Marketplace."** WWW 2016, Montréal, pp. 1339–1349. ACM DOI 10.1145/2872427.2883089.
+*Verified: title, authors, venue, abstract.* Methodology for detecting algorithmic
+(re)pricing; finds over 500 sellers using it. Establishes that prices move fast for
+reasons unrelated to who is looking — the premise of threats T1 and T9.
 
-### 1.4 Economics of price discrimination
-Theory — first, second, and third degree; welfare effects; conditions under which
-personalized pricing is profitable. Needed so the study's framing is not naive. The
-existence of personalized pricing is not by itself evidence of consumer harm, and the
-write-up should not imply otherwise.
+### 1.4 Policy
 
-### 1.5 Policy and regulatory context
-Disclosure requirements, consumer protection positions, and any regulatory attention to
-personalized pricing across jurisdictions. Motivates the work and shapes the disclosure
-decision in `06-ethics-and-legal.md` section 6.
+**Council of Economic Advisers. "Big Data and Differential Pricing."** Executive Office of
+the President, February 2015. *Verified: issuing body, date, summary.* Nineteen-page
+report; differential pricing often benefits firms and customers, but raises fairness
+concerns when consumers are unaware of how their information is used or when pricing
+keys on factors outside their control.
 
----
+### 1.5 Not yet covered
 
-## 2. Candidate anchor works — ALL UNVERIFIED
-
-Starting points for the search. **Every entry needs to be located and confirmed before
-any use.** Where a detail is uncertain, it is left blank rather than guessed.
-
-| Thread | Candidate work | Verify |
-|---|---|---|
-| 1.1 | Mikians et al., on detecting price and search discrimination on the internet — believed HotNets ~2012, with a follow-on crowd-assisted study ~2013 | Authors, venue, year, method, findings |
-| 1.1 | Hannak et al., measuring price discrimination and steering on e-commerce sites — believed IMC ~2014 | Authors, venue, year, retailer sample, prevalence found |
-| 1.1 | Vissers et al., on price discrimination in online airline tickets — believed PETS ~2014, believed a largely negative result | Whether the finding was null; airline scope limits its transfer to fixed-SKU retail |
-| 1.2 | Hannak et al., measuring personalization of web search — believed WWW ~2013 | Authors, venue, year; the noise-control method is the part that matters |
-| 1.3 | Chen, Mislove, Wilson, empirical analysis of algorithmic pricing on Amazon Marketplace — believed WWW ~2016 | Authors, venue, year, repricing prevalence |
-| 1.5 | A US executive-branch report on big data and differential pricing, believed ~2015 | Issuing body, year, conclusions |
-
-**Known gaps in this list:** non-US literature is entirely absent; anything published
-after roughly 2016 is absent; the economics-theory thread (1.4) has no entry at all.
-Those gaps are a property of this skeleton, not of the field.
+The economics-theory thread (degrees of price discrimination, welfare) has no verified
+entry. Non-US measurement work is absent. These are gaps in this file, not in the field.
 
 ---
 
-## 3. What the review must establish for this study specifically
+## 2. Verification method
 
-Beyond summarizing, the review has four jobs:
-
-1. **The recency gap.** State plainly when the most recent comparable measurement was
-   conducted. If the answer is "roughly a decade ago," that is the study's primary
-   justification and it should be argued explicitly, not implied.
-
-2. **The A/B testing gap (RQ4).** Determine how prior work distinguished attribute-based
-   pricing from randomized price experimentation. The working assumption is that
-   single-observation designs could not, and that replicate structure is this study's
-   methodological contribution. **If prior work already solved this, that changes the
-   contribution claim and possibly the design** — so this is the highest-priority
-   question in the review, and it must be answered before Phase 3 pre-registration.
-
-3. **Effect sizes for power.** Any documented magnitude is a prior for the minimum
-   detectable effect target. It does not replace the Phase 2 pilot variance estimate,
-   but it says whether the pilot's implied MDE is in a useful range.
-
-4. **Methods worth adopting.** Control designs, noise estimation, bot-detection
-   handling. Where prior work has a better approach than this project's draft, adopt it
-   and say so.
+Each work was located by web search on title and authors; venue, year, and DOI were
+confirmed against the ACM Digital Library or dblp listing. For Hannak 2014 and Karan
+2023 the PDF was retrieved and the text extracted and read; quoted passages are from
+that text. For the others, findings are taken from the abstract or from the description
+in a verified paper, and are marked as such above. Nothing in this file is recalled
+from memory.
 
 ---
 
-## 4. Review protocol
+## 3. What the review established for this study
 
-To be executed in Phase 1 or Phase 2, in parallel with instrument work — it does not
-block the build, but it does block Phase 3.
+The review had four jobs (previous version of this file). Outcomes:
 
-1. Search by thread, not by keyword alone: the literatures in 1.1–1.5 use different
-   vocabulary for the same phenomenon (price discrimination, personalized pricing,
-   differential pricing, price steering, dynamic pricing).
-2. Forward-citation search from each confirmed anchor, which is the most reliable way to
-   surface the post-2016 work absent from section 2.
-3. For each retained work record: design type, control arm present, replicates present,
-   sample, period, findings, and limitations the authors themselves state.
-4. Build the comparison table the paper will need: **this study versus prior work on
-   design features**, since that is where the contribution argument lives.
-5. Replace this file's section 2 with verified citations and delete the warning at the
-   top — the warning stays until every entry has been confirmed.
+**1. The recency gap — partly wrong.** The proposal's premise that comparable
+measurement was "roughly a decade old" holds for fixed-SKU general retail (Hannak 2014
+is still the most recent broad retail measurement found), but not for travel markets,
+where Karan 2023 is recent, large, and causally modeled. The correct statement is that
+*recent* work concentrates on travel and search-result markets, and *fixed-SKU retail*
+has not been re-measured at scale since 2014. That is narrower than what was written,
+and the proposal has been corrected.
+
+**2. The A/B testing question — resolved against the original claim.** The proposal
+assumed single-observation designs could not separate attribute-based pricing from
+randomized price experimentation, and that replicate structure was this study's
+methodological contribution. Two findings undercut that as stated:
+
+- Hannak 2014 used **duplicated control accounts** — one treatment run twice — to
+  establish a noise floor, and identified A/B testing as a mechanism from the data.
+  Replication for noise control is therefore established practice in this literature,
+  not a new idea.
+- Karan 2023 quantifies a **chance baseline** for price differences and compares
+  observed differences against it.
+
+What remains open, and is now the revised RQ3: neither work characterizes *how much*
+replication is needed to separate the mechanisms reliably, nor compares a single
+duplicated arm (Hannak's twin, k=2 on one treatment) with replication of *every* cell.
+Both are questions about the statistical properties of the design, which simulation is
+suited to answer and which neither paper attempted. The contribution is narrower than
+first claimed, and is stated that way in `../PROPOSAL.md`.
+
+**3. Effect sizes for power.** Karan 2023's profile-level differences of up to $6 against
+a $0.44 chance level, and Hannak 2014's observed member discounts, give order-of-magnitude
+priors. Neither is a fixed-SKU retail number; they bound the range of effect sizes worth
+simulating rather than fixing one.
+
+**4. Methods worth adopting.** Two, both adopted:
+
+- The duplicated-control idea generalizes to the stratified control replicates in the
+  sweep runner (`../src/pdd/collect.py`): the control is sampled throughout the sweep
+  so G4 can read drift, which is a stronger use of the same primitive.
+- Karan's "consensus" framing — the auditor must be able to show the seller received the
+  attribute it claims to have sent — is the justification for the bot-page canary and
+  for recording the proxy exit per observation. A measurement where the seller saw a
+  bot, not the persona, has no consensus and no interpretation.
 
 ---
 
-## 5. Honest note on this file
+## 4. Comparison table for the write-up
 
-This is the weakest document in the repository and is the one most likely to embarrass
-the project if used as-is. It exists to make the gap visible rather than to disguise it.
-A related-work section written from half-remembered citations is worse than no related
-work section, because it looks finished.
+| Design feature | Mikians 2012/13 | Hannak 2014 | Vissers 2014 | Karan 2023 | This study |
+|---|---|---|---|---|---|
+| Market | mixed web | 16 retail/travel | 25 airlines | kayak flights/hotels | fixed-SKU retail (mock; simulated) |
+| Controlled profiles | yes (crowd + synthetic) | yes | 66 | 9 | factorial grid |
+| Control arm | — | duplicated treatment (twin) | — | incognito profile | control persona, stratified through the sweep |
+| Replication per cell | — | one arm twice | repeated queries over time | daily repeats | *k* per cell, every cell |
+| Noise baseline | — | twin inconsistency | — | chance-level difference | within-cell variance |
+| A/B testing treated as a mechanism | — | identified from data | — | — | classified per cohort by variance decomposition |
+| Within-window comparison | — | same-time queries | same-time queries | same-time queries | sweep as unit; G4 gate |
+| Causal model | — | — | — | SCM + Bayesian | randomization (design); simulation for error rates |
+| Result type | prevalence signs | prevalence + mechanisms | null | prevalence + causal effects | detector error rates (methods) |
+
+The last column is the claim this study can actually make.

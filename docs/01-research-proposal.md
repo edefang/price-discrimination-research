@@ -20,8 +20,10 @@ Measurement Study
 Retailers can, in principle, vary a displayed price by anything the browser reveals:
 where the request appears to come from, what device made it, what language it prefers,
 whether the visitor has been seen before. Whether they *do*, at what scale, and on which
-attributes, is an empirical question with a thin and aging evidence base relative to how
-often the practice is asserted in public debate.
+attributes, is an empirical question whose evidence base is uneven: recent, causally
+modeled work exists for travel markets (Karan et al. 2023), while fixed-SKU general
+retail has not been broadly re-measured since Hannak et al. 2014. *(Corrected from
+"thin and aging" after the literature review; see `08-literature.md`, section 3.)*
 
 The question matters for three audiences: consumers deciding whether to trust displayed
 prices, regulators weighing disclosure rules, and researchers who need a current baseline
