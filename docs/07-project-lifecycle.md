@@ -6,7 +6,7 @@ document's purpose, not a formality — the v0 prototype's failure was building 
 detector before defining the unit of comparison, which is Phase 4 work attempted at
 Phase 1.
 
-**Current position: Phase 0 complete. Phase 1 in progress — Stage 1 done.** (2026-09-19)
+**Current position: Phase 0 and Phase 1 complete; the simulation study (PROPOSAL.md stages 3–4) is run and reported.** (2026-09-19)
 
 ---
 
@@ -40,24 +40,25 @@ addresses it. *(Met — see the summary table in `05-threats-to-validity.md`.)*
 **Entry.** Phase 0 complete.
 
 **Deliverables**
-- [ ] Mock storefront serving prices as a known function of persona attributes, with
-      injectable scenarios: no effect, single-factor effect, interaction, targeted
-      discount, locale currency change, mid-sweep price change, bot fallback page
-- [ ] Instrument implementing R1–R10 from `03-measurement-protocol.md` *(R1–R5, R7 done; R6 and R8–R10 need the collection layer)*
+- [x] Mock storefront serving prices as a known function of persona attributes — `../src/pdd/mock_store.py`, eleven scenarios
+- [x] Instrument implementing R1–R10 from `03-measurement-protocol.md` — collection layer in `../src/pdd/collect.py`, canary in `canary.py`, QC in `qc.py`
 - [x] Schema per section 2 of that document, with `sweep_id` and integer minor units — `../src/pdd/schema.py`
 - [x] Price parser with the fixture suite, passing all nine audit formats plus locale variants — `../src/pdd/parsing.py`
 - [x] Analysis code: two-sided, leave-one-out, currency-grouped — `../src/pdd/detect.py` *(variance decomposition awaits the simulator)*
 - [x] Test suite covering both pure layers — 52 tests passing
 - [x] v0-vs-corrected comparison harness — `../scripts/compare_v0.py`
 
-**Exit criteria**
-1. The instrument recovers the injected ground truth in **every** mock scenario,
-   including correctly reporting *no effect* where none was injected.
-2. The mid-sweep price-change scenario is caught by G4 rather than reported as
+**Exit criteria** *(all met 2026-09-19; `tests/test_e2e_mock.py`, `scripts/validate_mock.py`)*
+1. [x] The instrument recovers the injected ground truth in **every** mock scenario,
+   including correctly reporting *no effect* where none was injected. *(11/11)*
+2. [x] The mid-sweep price-change scenario is caught by G4 rather than reported as
    discrimination. **This is the direct regression test for the v0 fatal flaw.**
-3. The targeted-discount scenario is detected. *(v0 could not.)*
-4. The bot-page scenario is flagged, not silently analyzed. *(v0 could not.)*
-5. A fresh clone runs the full mock validation with one command.
+3. [x] The targeted-discount scenario is detected. *(v0 could not.)*
+4. [x] The bot-page scenario is flagged, not silently analyzed. *(v0 could not.)*
+5. [x] A fresh clone runs the full mock validation with one command.
+   *(`python scripts/validate_mock.py`; also over a real Chromium with `--playwright`)*
+
+**Status: COMPLETE.**
 
 **Risk.** Building against the mock only proves the logic, not live feasibility. That is
 Phase 2's job and the phases must not be merged.
@@ -196,6 +197,20 @@ monitoring is permitted; outcome analysis is not.
 **Exit criteria**
 1. A third party reproduces the reported numbers from the released panel.
 2. The instrument passes mock validation on a clean machine.
+
+---
+
+## Simulation study (PROPOSAL.md stages 3–4) — COMPLETE
+
+Not a lifecycle phase of the field study; the active proposal's substitute for
+Phases 2–5. Recorded here so the position is unambiguous.
+
+- [x] Simulator with known data-generating processes — `../src/pdd/simulate.py`
+- [x] Detector lattice D0–D6, one feature per step
+- [x] Grids A–D run at 200 panels per condition — `../scripts/run_ablation.py`
+- [x] Results and figures — `../results/`
+- [x] Vectorized D6 checked against the production detector on the same cohorts — `../tests/test_simulate.py`
+- [x] Write-up — `../PAPER.md`
 
 ---
 
