@@ -104,6 +104,14 @@ the audit is [`AUDIT-v0-prototype.md`](AUDIT-v0-prototype.md); the scope decisio
 | **Validation** | Full pipeline against every scenario; symmetric checks | `src/pdd/validate.py` |
 | **Simulator** | Generating processes and the D0–D6 lattice, vectorized | `src/pdd/simulate.py` |
 
+## Paper and slides
+
+| Deliverable | File | What it is |
+|---|---|---|
+| **Paper** | [`results/Detector_Design_Determines_Findings.pdf`](results/Detector_Design_Determines_Findings.pdf) | 12-page technical report with all four figures, tools, and references. Regenerate: `python scripts/make_paper.py` |
+| **Slides** | [`results/Detector_Design_Determines_Findings.pptx`](results/Detector_Design_Determines_Findings.pptx) | 8-slide summary with a native PowerPoint chart. Regenerate: `node scripts/make_deck.js` |
+| Source | [`PAPER.md`](PAPER.md) | The same argument in Markdown |
+
 ## Headline results
 
 Full tables in [`results/summary.md`](results/summary.md); every number reproducible from
@@ -320,7 +328,9 @@ exposing `base_url`, `url_for(product_id)`, `quote(product_id, signals)`, `expec
 │   ├── validate_mock.py          every scenario, full pipeline
 │   ├── compare_v0.py             prototype vs corrected on the audit scenarios
 │   ├── run_ablation.py           grids A–D → results/
-│   └── make_figures.py           figures 1–4
+│   ├── make_figures.py           figures 1–4
+│   ├── make_paper.py             the 12-page PDF report
+│   └── make_deck.js              the 8-slide PowerPoint
 ├── results/
 │   ├── ablation_rows.csv         one row per (condition, design, panel); 6 MB, regenerated from the seed, not committed
 │   ├── ablation_summary.csv      means and 95% CI half-widths

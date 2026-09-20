@@ -12,6 +12,7 @@ dependencies = []
 [project.optional-dependencies]
 dev = ["pytest>=8"]
 sim = ["numpy>=1.26", "pandas>=2.0", "scipy>=1.11", "matplotlib>=3.8"]
+docs = ["reportlab>=4.0"]   # scripts/make_paper.py; the deck needs node + pptxgenjs
 browser = ["playwright>=1.44"]
 
 [tool.setuptools.packages.find]

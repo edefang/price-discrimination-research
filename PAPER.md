@@ -187,6 +187,32 @@ Rates are over analysed cohorts; abstain is over all cohorts. The flag threshold
 
 The lattice is implemented in vectorized NumPy for Monte Carlo speed. A test constructs `Observation` records from a simulated panel, runs the production detector on each cohort, and asserts that it flags the same personas as the vectorized D6 — so the simulation cannot quietly diverge from the code that would analyse real data.
 
+### 7.5 Tools and technologies
+
+Everything is Python 3.12 and free software. The dependency list is deliberately short:
+a study whose point is that instruments should be checkable is poorly served by a stack
+nobody can reproduce.
+
+| Tool | Version | Used for |
+|---|---|---|
+| **Python** | 3.12 | Everything |
+| **Playwright** | 1.44+ | Real-browser collection: one Chromium process, a fresh context per observation, explicit waits for the price element |
+| **SQLite** | stdlib `sqlite3` | The observation panel; CHECK constraints enforce two of the audit's invariants at the storage layer |
+| **NumPy** | 2.5 | Vectorized simulation — the D0–D6 lattice over (sweeps x products x personas x replicates) arrays |
+| **pandas** | 3.0 | Aggregating Monte Carlo rows into per-condition means and confidence intervals |
+| **SciPy** | 1.18 | One-way ANOVA in the mechanism classifier |
+| **matplotlib** | 3.11 | Figures 1–4 |
+| **pytest** | 9.1 | 156 tests, including the audit's failures as regression tests |
+| **Git / GitHub Actions** | — | Version control; CI on Python 3.11 and 3.12 plus a separate real-browser job |
+| Python stdlib | 3.12 | `http.server` (mock storefront), `html.parser` (price-node extraction), `urllib` + `http.cookiejar` (HTTP fetcher and visit history), `dataclasses`, `enum`, `statistics`, `unicodedata` |
+| **reportlab** | 5.0 | Typesetting this report |
+| **python-pptx** | 1.0 | The accompanying slide deck |
+
+No paid service, no proxy provider, no cloud infrastructure, and no LLM-based component
+is used anywhere in the instrument or the analysis. Total cost of the study: zero.
+
+---
+
 ---
 
 ## 8. Results
