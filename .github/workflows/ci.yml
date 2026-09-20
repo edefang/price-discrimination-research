@@ -37,7 +37,9 @@ jobs:
       - name: Install with Playwright
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -e ".[dev,browser]"
+          # `sim` is needed even though this job only runs -m slow: pytest imports every
+          # test module during collection, before markers deselect anything.
+          python -m pip install -e ".[dev,sim,browser]"
           python -m playwright install --with-deps chromium
       - name: Real-browser end-to-end
         run: python -m pytest -q -m slow
